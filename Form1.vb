@@ -64,13 +64,18 @@ Public Class Form1
     'delete all tweets
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
 
-        If NumberToDelete.Text = "" Then
+        Dim NumToDelete As Integer = NumberToDelete.Text
+        Dim TweetsToDelete As Integer = TweetsDeletedCounter.Text
+
+        TweetsDeletedCounter.Text = 0
+
+        If NumToDelete = 0 Then
 
             MsgBox("Enter the number of tweets to delete!", 0, "IMPORTANT SHIT")
 
         Else
 
-            TweetsDeletedCounter.Text = 0
+            TweetsToDelete = 0
 
             WebBrowser.Navigate("https://mobile.twitter.com/account")
 
@@ -84,7 +89,8 @@ Public Class Form1
 
 
 
-            Do While TweetsDeletedCounter.Text < NumberToDelete.Text
+
+            Do While TweetsToDelete < NumToDelete
 
 
                 Dim SourceCode As String = WebBrowser.DocumentText
@@ -132,7 +138,9 @@ Public Class Form1
                                 ' Deleting
                                 If elem.GetAttribute("value") = "Delete" Then
                                     elem.InvokeMember("click")
+                                    System.Console.WriteLine("Deleting")
                                     'adding to the counter                           
+                                    TweetsToDelete = TweetsToDelete + 1
                                     TweetsDeletedCounter.Text = TweetsDeletedCounter.Text + 1
                                     WebBrowser.Navigate("https://mobile.twitter.com/account")
 
